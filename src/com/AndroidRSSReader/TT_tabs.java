@@ -17,7 +17,7 @@ public class TT_tabs extends TabActivity {
         Intent day1in = new Intent(this,TTList.class);
         day1.setIndicator("D1");
         day1.setContent(day1in);
-        TabSpec day2 = tabs.newTabSpec("D3");
+        TabSpec day2 = tabs.newTabSpec("D2");
         Intent day2in = new Intent(this,TTList.class);
         day2.setIndicator("D2");
         day2.setContent(day2in);

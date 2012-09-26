@@ -3,7 +3,9 @@ package com.AndroidRSSReader;
 import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
@@ -12,7 +14,8 @@ public class AndroidRSSReader extends TabActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maintabs);
-        
+        /*View main = (View)findViewById(R.id.layout);
+        main.setBackgroundColor(Color.WHITE);*/
         TabHost tabs = getTabHost();
         
         TabSpec newsreader = tabs.newTabSpec("News");

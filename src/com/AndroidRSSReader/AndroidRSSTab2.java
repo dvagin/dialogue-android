@@ -50,7 +50,7 @@ public class AndroidRSSTab2 extends Activity {
 		//rssURLTV.setText(getIntent().getStringExtra("Url"));
 		feedUrl = getIntent().getStringExtra("Url");
 		// get button from layout.xml
-		Button fetchRss = (Button) findViewById(R.id.fetchRss);
+		/*Button fetchRss = (Button) findViewById(R.id.fetchRss);
 
 		// define the action that will be executed when the button is clicked.
 		fetchRss.setOnClickListener(new OnClickListener() {
@@ -61,7 +61,7 @@ public class AndroidRSSTab2 extends Activity {
 				//feedUrl = rssURLTV.getText().toString();
 				refressRssList();
 			}
-		});
+		});*/
 
 		// get the listview from layout.xml
 		rssListView = (ListView) findViewById(R.id.rssListView);

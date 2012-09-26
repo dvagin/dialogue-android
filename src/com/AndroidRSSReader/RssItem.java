@@ -78,7 +78,7 @@ public class RssItem {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd - hh:mm:ss");
 
-		String result = getTitle() + "   ( " + sdf.format(this.getPubDate()) + " )" + "\n"+getDescription();
+		String result = getTitle() + "   ( " + sdf.format(this.getPubDate()) + " )";
 		return result;
 	}
 
@@ -90,12 +90,10 @@ public class RssItem {
 			//open an URL connection make GET to the server and 
 			//take xml RSS data
 			URL url = new URL(feedUrl);
-			Log.d("log","before conn");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			
 			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				InputStream is = conn.getInputStream();
-				Log.d("log","after conn");
 				//DocumentBuilderFactory, DocumentBuilder are used for 
 				//xml parsing
 				DocumentBuilderFactory dbf = DocumentBuilderFactory
@@ -126,15 +124,11 @@ public class RssItem {
 								.getElementsByTagName("pubDate").item(0);
 						Element _linkE = (Element) entry.getElementsByTagName(
 								"link").item(0);
-						Log.d("taaaag","length "+_descriptionE.getChildNodes().getLength());
-						Log.d("taaaag",_descriptionE.getFirstChild().getNodeValue());
 						String _title = _titleE.getFirstChild().getNodeValue();
 						String _description = _descriptionE.getFirstChild().getNodeValue();
 						String _detail = _descriptionE.getFirstChild().getNodeValue();
 						int idx1 = _description.indexOf("</p>");
 						int idx2 = _description.indexOf("</div>");
-						Log.d("view","string is "+_description.substring(idx1+4, idx2));
-						Log.d("view","idx1 is "+idx1 + " and idx2 is "+idx2);
 						Date _pubDate = new Date(_pubDateE.getFirstChild().getNodeValue());
 						String _link = _linkE.getFirstChild().getNodeValue();
 						_description = _description.substring(idx1+4, idx2);

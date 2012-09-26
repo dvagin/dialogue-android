@@ -18,7 +18,7 @@ public class TimetableMain extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent start = new Intent(TimetableMain.this,WebShower.class);
+				Intent start = new Intent(TimetableMain.this,AgendaActivity.class);
 				TimetableMain.this.startActivity(start);
 			}
 			
