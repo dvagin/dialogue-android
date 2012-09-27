@@ -22,7 +22,7 @@ public class AndroidRSSReader extends TabActivity {
         
         TabSpec newsreader = tabs.newTabSpec("News");
         Intent newsread = new Intent(this,AndroidRSSTab1.class);
-        newsread.putExtra("Url","http://wpfdc.org/index.php?option=com_content&view=category&layout=blog&id=40&Itemid=93&lang=en&format=feed&type=rss");
+        newsread.putExtra("Url","http://www.wpfdc.org/index.php?format=feed&type=rss&lang=en");
         newsreader.setIndicator("News");
         newsreader.setContent(newsread);
         

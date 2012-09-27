@@ -86,7 +86,7 @@ public class AndroidRSSTab2 extends Activity {
 					intent.putExtra("Url","http://wpfdc.org/index.php?option=com_content&view=category&layout=blog&id=68&Itemid=94&lang=en&format=feed&type=rss");
 					break;
 				case 3:
-					intent.putExtra("Url","http://wpfdc.org/index.php?option=com_content&view=category&layout=blog&id=40&Itemid=93&lang=en&format=feed&type=rss");
+					intent.putExtra("Url","http://wpfdc.org/index.php?option=com_content&view=category&layout=blog&id=16&Itemid=95&lang=en&format=feed&type=rss");
 					break;
 				}
 				startActivity(intent);
