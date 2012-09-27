@@ -10,6 +10,8 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 public class AndroidRSSReader extends TabActivity {
+	
+	public static final String PREFS_NAME = "Dialogue prefs";
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

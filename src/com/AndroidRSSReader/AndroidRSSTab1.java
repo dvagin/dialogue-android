@@ -111,11 +111,7 @@ public class AndroidRSSTab1 extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				if(InternetReader.checkConnection(getBaseContext())){
-					refressRssList();
-				}else{
-					Toast.makeText(getApplicationContext(), "There are no internet connection", 1000).show();
-				}
+					refressRssList(true);
 			}
 		});
 
@@ -154,11 +150,7 @@ public class AndroidRSSTab1 extends Activity {
 			}
 		};
 		rssListView.setAdapter(aa);
-		if(InternetReader.checkConnection(getBaseContext())){
-			refressRssList();
-		}else{
-			Toast.makeText(getApplicationContext(), "There are no internet connection", 1000).show();
-		}
+			refressRssList(false);
 	}
 
 	@Override
@@ -204,11 +196,11 @@ public class AndroidRSSTab1 extends Activity {
 		}
 	}
 
-	private void refressRssList() {
+	private void refressRssList(final boolean renew) {
 		Thread thread = new Thread(){
 			@Override
 			public void run(){
-				final ArrayList<RssItem> newItems = RssItem.getRssItems(feedUrl);
+				final ArrayList<RssItem> newItems = RssItem.getRssItems(feedUrl,AndroidRSSTab1.this,renew);
 				AndroidRSSTab1.this.runOnUiThread(new Runnable(){
 					@Override
 					public void run(){

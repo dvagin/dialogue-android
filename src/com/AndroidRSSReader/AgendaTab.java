@@ -11,6 +11,8 @@ import com.AndroidRSSReader.InternetReader.Links;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -136,9 +138,10 @@ public class AgendaTab extends Activity {
 		dialog.setMessage("Refreshing timetable...");
 		dialog.setCancelable(false);
 		listView = (ExpandableListView)findViewById(R.id.expandableListView1);
-		refresh();
+
 		hallNum = getIntent().getExtras().getInt("HallNum");
 		groups = new ArrayList<ArrayList<DateItem>>();
+
         /*ArrayList<DateItem> children1 = new ArrayList<DateItem>();
         ArrayList<DateItem> children2 = new ArrayList<DateItem>();
         children1.add(new DateItem("9:00-13:00 Opening plenary session - \"Socio-political transformation: chance or challenge for dialogue?\"","October 4"));
@@ -151,47 +154,56 @@ public class AgendaTab extends Activity {
         adapter = new ExpListAdapter(getApplicationContext(), groups);
         
         listView.setAdapter(adapter);
-        
+		refresh();
         //adapter.notifyDataSetChanged();
         
         
 		
 	}
 	
+	
+	public void refreshAdapter(final String answer){
+		ArrayList<ArrayList<DateItem>> newgroups = new ArrayList<ArrayList<DateItem>>();
+		Document doc = InternetReader.getDomElement(answer);
+		   NodeList nl = doc.getElementsByTagName("Hall");
+		   Log.d("refresh","hall Num "+hallNum);
+		   NodeList nlc = nl.item(hallNum-1).getChildNodes();
+		   Log.d("refresh",answer);
+		   /*NodeList nlcl = nlc.item(1).getChildNodes();*/
+		   Log.d("tag","length "+nlc.getLength());
+		   for(int i = 0;i<nlc.getLength();i++){
+			   if(!nlc.item(i).getNodeName().equals("#text")){
+				   NodeList inDate = nlc.item(i).getChildNodes();
+				   Log.d("indate","elems length "+inDate.getLength());
+				   ArrayList<DateItem> buf = new ArrayList<DateItem>();
+				   for(int j = 0; j<inDate.getLength();++j){
+					   if(!inDate.item(j).getNodeName().equals("#text")){
+						   buf.add(new DateItem(inDate.item(j).getTextContent(),((Element)nlc.item(i)).getAttribute("value")));
+						   Log.d("indate","name "+inDate.item(j).getNodeName() + " " + ((Element)nlc.item(i)).getAttribute("value") + " val " + inDate.item(j).getTextContent()); 
+					   }
+				   }
+				   if(buf.size()==0){
+					   buf.add(new DateItem("There are no tables and no sessions.",((Element)nlc.item(i)).getAttribute("value")));
+				   }
+				   newgroups.add(buf);
+			   }
+		   }
+		   Log.d("tag","finished " + newgroups.size());
+		   groups.clear();
+		   groups.addAll(newgroups);
+	}
+	
 	public void refresh(){
 		InternetReader read = new InternetReader(){
 			public void reqFinished(String answer){
-				Log.d("tag",answer);
-				ArrayList<ArrayList<DateItem>> newgroups = new ArrayList<ArrayList<DateItem>>();
-				Document doc = InternetReader.getDomElement(answer);
-				doc.getDocumentElement().normalize();
-				   NodeList nl = doc.getElementsByTagName("Hall");
-				   NodeList nlc = nl.item(hallNum-1).getChildNodes();
-				   /*NodeList nlcl = nlc.item(1).getChildNodes();*/
-				   Log.d("tag","length "+nlc.getLength());
-				   for(int i = 0;i<nlc.getLength();i++){
-					   if(!nlc.item(i).getNodeName().equals("#text")){
-						   NodeList inDate = nlc.item(i).getChildNodes();
-						   Log.d("indate","elems length "+inDate.getLength());
-						   ArrayList<DateItem> buf = new ArrayList<DateItem>();
-						   for(int j = 0; j<inDate.getLength();++j){
-							   if(!inDate.item(j).getNodeName().equals("#text")){
-								   buf.add(new DateItem(inDate.item(j).getTextContent(),((Element)nlc.item(i)).getAttribute("value")));
-								   Log.d("indate","name "+inDate.item(j).getNodeName() + " " + ((Element)nlc.item(i)).getAttribute("value") + " val " + inDate.item(j).getTextContent()); 
-							   }
-						   }
-						   if(buf.size()==0){
-							   buf.add(new DateItem("There are no tables and no sessions.",((Element)nlc.item(i)).getAttribute("value")));
-						   }
-						   newgroups.add(buf);
-					   }
-				   }
-				   Log.d("tag","finished " + newgroups.size());
-				   groups.clear();
-				   groups.addAll(newgroups);
+
+				SharedPreferences settings = AgendaTab.this.getSharedPreferences(AndroidRSSReader.PREFS_NAME, 0);
+				Editor edit = settings.edit();
+				edit.putString("agenda_cache", answer);
+				edit.commit();
+				refreshAdapter(answer);
 				   AgendaTab.this.runOnUiThread(new Runnable(){
 					  public void run(){
-						  //listView.invalidate();
 						  adapter.notifyDataSetChanged();
 						  dialog.dismiss();
 					  }
@@ -199,10 +211,23 @@ public class AgendaTab extends Activity {
 				   
 			}
 		};
-		if(InternetReader.checkConnection(getBaseContext())){
-			read.setAsyncRequest("", Links.LINKONE);
-			dialog.show();
-		}
+		SharedPreferences settings = AgendaTab.this.getSharedPreferences(AndroidRSSReader.PREFS_NAME, 0);
+		//if(settings.getString("agenda_cache", "").equals("")){
+			if(InternetReader.checkConnection(getBaseContext())){
+				read.setAsyncRequest("", Links.LINKONE);
+				dialog.show();
+			}else{
+				dialog.show();
+				refreshAdapter(settings.getString("agenda_cache", ""));
+				adapter.notifyDataSetChanged();
+				dialog.dismiss();
+
+			}
+		/*}else{
+			Log.d("agenda",settings.getString("agenda_cache", ""));
+			refreshAdapter(settings.getString("agenda_cache", ""));
+		}*/
+
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.AndroidRSSReader;
 
 import java.io.InputStream;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -13,9 +14,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
+import org.xml.sax.InputSource;
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.text.Html;
 import android.util.Log;
+import android.widget.Toast;
 
 public class RssItem {
 
@@ -89,18 +93,40 @@ public class RssItem {
 		return result;
 	}
 
-	public static ArrayList<RssItem> getRssItems(String feedUrl) {
+	public static ArrayList<RssItem> getRssItems(String feedUrl,final Activity act,boolean renew) {
 
 		ArrayList<RssItem> rssItems = new ArrayList<RssItem>();
 
 		try {
 			//open an URL connection make GET to the server and 
 			//take xml RSS data
-			URL url = new URL(feedUrl);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			
-			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				InputStream is = conn.getInputStream();
+			/*URL url = new URL(feedUrl);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();*/
+			SharedPreferences settings = act.getSharedPreferences(AndroidRSSReader.PREFS_NAME, 0);
+			SharedPreferences.Editor prefEditor = settings.edit();
+			InternetReader read = new InternetReader();
+			String content = "";
+			if(settings.getString("rss_cache", "").equals("")||renew){
+				if(InternetReader.checkConnection(act.getBaseContext())){
+					Log.d("tag","is empty");
+					content = read.setRequest("", feedUrl);
+					prefEditor.putString("rss_cache", content);
+					prefEditor.commit();
+				}else{
+					Log.d("tag","no interneeeeet");
+					content = settings.getString("rss_cache", "");
+					act.runOnUiThread(new Runnable(){
+						public void run(){
+							Toast.makeText(act, "There is no internet connection", 1000).show();
+						}
+					});
+					
+				}
+			}else{
+				content = settings.getString("rss_cache", "");
+			}
+			if (!content.equals("")/*conn.getResponseCode() == HttpURLConnection.HTTP_OK*/) {
+				//InputStream is = conn.getInputStream();
 				//DocumentBuilderFactory, DocumentBuilder are used for 
 				//xml parsing
 				DocumentBuilderFactory dbf = DocumentBuilderFactory
@@ -109,7 +135,9 @@ public class RssItem {
 
 				//using db (Document Builder) parse xml data and assign
 				//it to Element
-				Document document = db.parse(is);
+				
+				
+				Document document = db.parse(new InputSource(new StringReader(content)));
 				Element element = document.getDocumentElement();
 
 				//take rss nodes to NodeList

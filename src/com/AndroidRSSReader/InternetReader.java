@@ -161,6 +161,35 @@ public class InternetReader {
 
 	      }
 	   
+	   
+	   public HttpResponse initAction(String rawbody,String url){
+	          
+	          HttpPost httppost = new HttpPost(url);
+	          Log.d("lbs","http post constructed");
+	          try {
+	              //UrlEncodedFormEntity form = new UrlEncodedFormEntity(pairslist,HTTP.UTF_8);
+	              //UrlEncodedFormEntity form = new UrlEncodedFormEntity()
+	              /*form.setContentType("application/x-www-form-urlencoded; charset=UTF-8");
+	              form.setContentEncoding("UTF-8");*/
+	              httppost.setEntity(new StringEntity(rawbody,"UTF-8"));
+	              httppost.setHeader("Content-type", "application/x-www-form-urlencoded");
+	              
+	              HttpResponse response = httpclient.execute(httppost);
+	              return response;
+	          } catch (UnsupportedEncodingException e) {
+	              // TODO Auto-generated catch block
+	              e.printStackTrace();
+	          } catch (ClientProtocolException e) {
+	              // TODO Auto-generated catch block
+	              e.printStackTrace();
+	          } catch (IOException e) {
+	              // TODO Auto-generated catch block
+	              e.printStackTrace();
+	          }/**/
+	          return null;
+
+	      }
+	   
 
 	public enum Links {
 	   LINKONE {
@@ -174,6 +203,29 @@ public class InternetReader {
 	       Log.d("lbs","setRequest");
 	       
 	       HttpResponse httpresponse = initAction(pairslist, link);
+	       if(httpresponse != null){
+	           try {
+	               InputStream is = httpresponse.getEntity().getContent();
+	               //is.close();
+	               String returnstr = InternetReader.convertStreamToString(is);
+	               //String html = EntityUtils.toString(httpresponse.getEntity() /*, Encoding*/ );
+	               //
+	               httpresponse.getEntity().consumeContent();
+	               return returnstr;
+	           } catch (IllegalStateException e) {
+	               e.printStackTrace();
+	           } catch (IOException e) {
+	               e.printStackTrace();
+	           }
+	       }
+	       return null;
+	   }
+	   
+	   
+	   public String setRequest(final String rawbody, final String url){
+	       Log.d("lbs","setRequest");
+	       
+	       HttpResponse httpresponse = initAction(rawbody, url);
 	       if(httpresponse != null){
 	           try {
 	               InputStream is = httpresponse.getEntity().getContent();
@@ -225,6 +277,31 @@ public class InternetReader {
 	           @Override
 	           public void run() {
 	               HttpResponse httpresponse = initAction(rawbody, link);
+	               if(httpresponse != null){
+	                   try {
+	                       InputStream is = httpresponse.getEntity().getContent();
+	                       String returnstr = InternetReader.convertStreamToString(is);
+	                       httpresponse.getEntity().consumeContent();
+	                       reqFinished(returnstr);
+	                   } catch (IllegalStateException e) {
+	                       e.printStackTrace();
+	                   } catch (IOException e) {
+	                       e.printStackTrace();
+	                   }
+	               }
+	               
+	           }
+	           
+	       };
+	       new Thread(async).start();
+	   }
+	   
+	   
+	   public void setAsyncRequest(final String rawbody, final String url){
+	       Runnable async = new Runnable(){
+	           @Override
+	           public void run() {
+	               HttpResponse httpresponse = initAction(rawbody, url);
 	               if(httpresponse != null){
 	                   try {
 	                       InputStream is = httpresponse.getEntity().getContent();
