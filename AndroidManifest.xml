@@ -5,7 +5,7 @@
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name=".AndroidRSSReader" android:label="@string/app_name"  android:screenOrientation="portrait" android:theme="@android:style/Theme.Light"
+		<activity android:name=".Splash" android:label="@string/app_name"  android:screenOrientation="portrait" android:theme="@android:style/Theme.Light"
 		    >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -20,6 +20,7 @@
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 		</activity>
+		<activity android:name=".AndroidRSSReader" android:label="@string/app_name"  android:screenOrientation="portrait" android:theme="@android:style/Theme.Light"></activity>
 		<activity android:name=".AndroidRSSTab1" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
 		<activity android:name=".AndroidRSSTab2" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
 		<activity android:name=".TopicDisplayer" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>

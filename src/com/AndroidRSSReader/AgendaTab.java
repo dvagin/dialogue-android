@@ -13,7 +13,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +41,7 @@ public class AgendaTab extends Activity {
 
 	    private ArrayList<ArrayList<DateItem>> mGroups;
 	    private Context mContext;
-	  
+	    private int lastGroup = -1;
 	    public ExpListAdapter (Context context,ArrayList<ArrayList<DateItem>> groups){
 	        mContext = context;
 	        mGroups = groups;
@@ -87,17 +90,25 @@ public class AgendaTab extends Activity {
 	            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	            convertView = inflater.inflate(R.layout.group_view, null);
 	        }
-
+	        //Log.d("tag","clicked "+isExpanded);
 	        if (isExpanded){
+	        	
 	           //Изменяем что-нибудь, если текущая Group раскрыта
+	           convertView.setBackgroundColor(0xFFC0D999);
 	        }
 	        else{
+	        	GradientDrawable gd = new GradientDrawable(
+			            GradientDrawable.Orientation.TOP_BOTTOM,new int[] {0xFF4DB2E0,0xFF2D99C9}
+			            );
+			    gd.setCornerRadius(0f);
+			    convertView.setBackgroundDrawable(gd);
 	            //Изменяем что-нибудь, если текущая Group скрыта
 	        }
 
 	        TextView textGroup = (TextView) convertView.findViewById(R.id.textGroup);
+	        textGroup.setTextColor(Color.WHITE);
 	        textGroup.setText(mGroups.get(groupPosition).get(0).DateName);
-
+	       
 	        return convertView;
 
 	    }
@@ -111,7 +122,7 @@ public class AgendaTab extends Activity {
 	        }
 
 	        TextView textChild = (TextView) convertView.findViewById(R.id.textGroup);
-	        textChild.setText(mGroups.get(groupPosition).get(childPosition).Value);
+	        textChild.setText(Html.fromHtml(mGroups.get(groupPosition).get(childPosition).Value));
 
 	        return convertView;
 	    }
@@ -120,6 +131,20 @@ public class AgendaTab extends Activity {
 	    public boolean isChildSelectable(int groupPosition, int childPosition) {
 	        return true;
 	    }
+	    
+	    @Override
+	    public void onGroupExpanded(int groupPosition){
+	        //collapse the old expanded group, if not the same
+	        //as new group to expand
+	        if(groupPosition != lastGroup){
+	        	listView.collapseGroup(lastGroup);
+	        }
+	        
+
+	        super.onGroupExpanded(groupPosition);           
+	        lastGroup = groupPosition;
+	    }
+
 	    
 	};
 	
