@@ -42,7 +42,7 @@ public class AndroidRSSTab2 extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.tab2);
 		dialog = new ProgressDialog(this);
 		dialog.setMessage("Fetching RSS");
 		// get textview from our layout.xml
@@ -74,7 +74,21 @@ public class AndroidRSSTab2 extends Activity {
 
 				// we call the other activity that shows a single rss item in
 				// one page
-				Intent intent = new Intent(AndroidRSSTab2.this,TopicDisplayer.class);
+				Intent intent = new Intent(AndroidRSSTab2.this,AndroidRSSTab1.class);
+				switch(index){
+				case 0:
+					intent.putExtra("Url","http://wpfdc.org/index.php?option=com_content&view=category&layout=blog&id=40&Itemid=93&lang=en&format=feed&type=rss");
+					break;
+				case 1:
+					intent.putExtra("Url","http://wpfdc.org/index.php?option=com_content&view=category&layout=blog&id=41&Itemid=92&lang=en&format=feed&type=rss");
+					break;
+				case 2:
+					intent.putExtra("Url","http://wpfdc.org/index.php?option=com_content&view=category&layout=blog&id=68&Itemid=94&lang=en&format=feed&type=rss");
+					break;
+				case 3:
+					intent.putExtra("Url","http://wpfdc.org/index.php?option=com_content&view=category&layout=blog&id=40&Itemid=93&lang=en&format=feed&type=rss");
+					break;
+				}
 				startActivity(intent);
 			}
 		});

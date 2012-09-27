@@ -106,15 +106,15 @@ public class RssItem {
 			SharedPreferences.Editor prefEditor = settings.edit();
 			InternetReader read = new InternetReader();
 			String content = "";
-			if(settings.getString("rss_cache", "").equals("")||renew){
+			if(settings.getString(feedUrl, "").equals("")||renew){
 				if(InternetReader.checkConnection(act.getBaseContext())){
 					Log.d("tag","is empty");
 					content = read.setRequest("", feedUrl);
-					prefEditor.putString("rss_cache", content);
+					prefEditor.putString(feedUrl, content);
 					prefEditor.commit();
 				}else{
 					Log.d("tag","no interneeeeet");
-					content = settings.getString("rss_cache", "");
+					content = settings.getString(feedUrl, "");
 					act.runOnUiThread(new Runnable(){
 						public void run(){
 							Toast.makeText(act, "There is no internet connection", 1000).show();
@@ -123,7 +123,7 @@ public class RssItem {
 					
 				}
 			}else{
-				content = settings.getString("rss_cache", "");
+				content = settings.getString(feedUrl, "");
 			}
 			if (!content.equals("")/*conn.getResponseCode() == HttpURLConnection.HTTP_OK*/) {
 				//InputStream is = conn.getInputStream();
