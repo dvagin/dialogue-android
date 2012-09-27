@@ -79,7 +79,7 @@ public class AndroidRSSTab2 extends Activity {
 			}
 		});
 
-		aa = new ArrayAdapter<String>(this, R.layout.list_item, rssItems);
+		aa = new ArrayAdapter<String>(this, R.layout.topics_list_item, rssItems);
 		rssListView.setAdapter(aa);
 
 		refressRssList();

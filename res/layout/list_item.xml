@@ -8,9 +8,9 @@
     <ImageView
         android:id="@+id/logo"
         android:layout_width="50px"
-        android:layout_height="50px"
+        android:layout_height="80px"
         android:layout_marginLeft="5px"
-        android:layout_marginRight="20px"
+        android:layout_marginRight="10px"
         android:layout_marginTop="5px">
     </ImageView>
  

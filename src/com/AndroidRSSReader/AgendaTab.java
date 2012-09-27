@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import com.AndroidRSSReader.InternetReader.Links;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -123,25 +124,30 @@ public class AgendaTab extends Activity {
 	protected ArrayList<ArrayList<DateItem>> groups;
 	protected ExpListAdapter adapter;
 	ExpandableListView listView;
+	ProgressDialog dialog;
 	
 	public int hallNum;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.agendatab);
+		
+		dialog = new ProgressDialog(this);
+		dialog.setMessage("Refreshing timetable...");
+		dialog.setCancelable(false);
 		listView = (ExpandableListView)findViewById(R.id.expandableListView1);
 		refresh();
 		hallNum = getIntent().getExtras().getInt("HallNum");
 		groups = new ArrayList<ArrayList<DateItem>>();
-        ArrayList<DateItem> children1 = new ArrayList<DateItem>();
+        /*ArrayList<DateItem> children1 = new ArrayList<DateItem>();
         ArrayList<DateItem> children2 = new ArrayList<DateItem>();
         children1.add(new DateItem("9:00-13:00 Opening plenary session - \"Socio-political transformation: chance or challenge for dialogue?\"","October 4"));
         children1.add(new DateItem("15:00-19:00 Thematic plenary session 1 - \"Global Peace and Justice\"","October 4"));
         groups.add(children1);
-        children2.add(new DateItem("9:00-13:30 Thematic plenary session 2 - \"Visions of a New Earth: Responding to the Ecological Challenge\"","October 5"));
+        children2.add(new DateItem("9:00-13:30 Thematic plenary session 2 - \"Visions of a New Earth: Responding to the Ecological Challenge\"","October 5"));*/
         /*children2.add("Child_2");
         children2.add("Child_3");*/
-        groups.add(children2);     
+        /*groups.add(children2);*/     
         adapter = new ExpListAdapter(getApplicationContext(), groups);
         
         listView.setAdapter(adapter);
@@ -187,6 +193,7 @@ public class AgendaTab extends Activity {
 					  public void run(){
 						  //listView.invalidate();
 						  adapter.notifyDataSetChanged();
+						  dialog.dismiss();
 					  }
 				   });
 				   
@@ -194,6 +201,7 @@ public class AgendaTab extends Activity {
 		};
 		if(InternetReader.checkConnection(getBaseContext())){
 			read.setAsyncRequest("", Links.LINKONE);
+			dialog.show();
 		}
 	}
 

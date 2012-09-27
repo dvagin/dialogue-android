@@ -24,13 +24,15 @@ public class RssItem {
 	private Date pubDate;
 	private String link;
 	private String detail;
+	private String imageSrc;
 
-	public RssItem(String title, String description, Date pubDate, String link,String detail) {
+	public RssItem(String title, String description, Date pubDate, String link,String detail,String imageSrc) {
 		this.title = title;
 		this.description = description;
 		this.pubDate = pubDate;
 		this.link = link;
 		this.detail = detail;
+		this.imageSrc = imageSrc;
 	}
 
 	public String getTitle() {
@@ -72,6 +74,11 @@ public class RssItem {
 	public void setDetail(String detail){
 		this.detail = detail;
 	}
+	
+	public String getSrc() {
+		return imageSrc;
+	}
+
 
 	@Override
 	public String toString() {
@@ -127,6 +134,13 @@ public class RssItem {
 						String _title = _titleE.getFirstChild().getNodeValue();
 						String _description = _descriptionE.getFirstChild().getNodeValue();
 						String _detail = _descriptionE.getFirstChild().getNodeValue();
+						int imgid1 = _detail.indexOf("src=\"");
+						int imgid2 = _detail.indexOf("\"", imgid1+6);
+						
+						Log.d("tag","img is "+_detail.substring(imgid1+5, imgid2));
+						
+						
+						
 						int idx1 = _description.indexOf("</p>");
 						int idx2 = _description.indexOf("</div>");
 						Date _pubDate = new Date(_pubDateE.getFirstChild().getNodeValue());
@@ -137,7 +151,7 @@ public class RssItem {
 						_description = _description.substring(idx1+4, idx2);
 						//create RssItemObject and add it to the ArrayList
 						RssItem rssItem = new RssItem(_title, _description,
-								_pubDate, _link, _detail);
+								_pubDate, _link, _detail,_detail.substring(imgid1+5, imgid2));
 
 						rssItems.add(rssItem);
 					}
