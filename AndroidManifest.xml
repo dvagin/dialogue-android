@@ -5,7 +5,7 @@
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name=".AndroidRSSReader" android:label="@string/app_name" android:theme="@android:style/Theme.Light"
+		<activity android:name=".AndroidRSSReader" android:label="@string/app_name"  android:screenOrientation="portrait" android:theme="@android:style/Theme.Light"
 		    >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -13,22 +13,22 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".RssItemDisplayer" android:label="Display Rss Item" android:theme="@android:style/Theme.Light"
+		<activity android:name=".RssItemDisplayer" android:label="Display Rss Item"  android:screenOrientation="portrait" android:theme="@android:style/Theme.Light"
 		    >
 			<intent-filter>
 				<action android:name="com.AndroidRSSReader.displayRssItem" />
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 		</activity>
-		<activity android:name=".AndroidRSSTab1" android:theme="@android:style/Theme.Light"></activity>
-		<activity android:name=".AndroidRSSTab2" android:theme="@android:style/Theme.Light"></activity>
-		<activity android:name=".TopicDisplayer" android:theme="@android:style/Theme.Light"></activity>
-		<activity android:name=".TimetableMain" android:theme="@android:style/Theme.Light"></activity>
-		<activity android:name=".TT_tabs" android:theme="@android:style/Theme.Light"></activity>
-		<activity android:name=".TTList" android:theme="@android:style/Theme.Light"></activity>
-		<activity android:name=".WebShower" android:theme="@android:style/Theme.Light"></activity>
-		<activity android:name=".AgendaActivity" android:theme="@android:style/Theme.Light"></activity>
-		<activity android:name=".AgendaTab" android:theme="@android:style/Theme.Light"></activity>
+		<activity android:name=".AndroidRSSTab1" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
+		<activity android:name=".AndroidRSSTab2" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
+		<activity android:name=".TopicDisplayer" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
+		<activity android:name=".TimetableMain" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
+		<activity android:name=".TT_tabs" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
+		<activity android:name=".TTList" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
+		<activity android:name=".WebShower" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
+		<activity android:name=".AgendaActivity" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
+		<activity android:name=".AgendaTab" android:theme="@android:style/Theme.Light"  android:screenOrientation="portrait"></activity>
 		
 	</application>
 

@@ -29,14 +29,16 @@ public class RssItem {
 	private String link;
 	private String detail;
 	private String imageSrc;
+	private String author;
 
-	public RssItem(String title, String description, Date pubDate, String link,String detail,String imageSrc) {
+	public RssItem(String title, String description, Date pubDate, String link,String detail,String imageSrc,String author) {
 		this.title = title;
 		this.description = description;
 		this.pubDate = pubDate;
 		this.link = link;
 		this.detail = detail;
 		this.imageSrc = imageSrc;
+		this.author = author;
 	}
 
 	public String getTitle() {
@@ -82,14 +84,19 @@ public class RssItem {
 	public String getSrc() {
 		return imageSrc;
 	}
+	
+	public String getAuthor(){
+		return author;
+	}
 
 
 	@Override
 	public String toString() {
 
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd - hh:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy");
 
-		String result = getTitle() + "   ( " + sdf.format(this.getPubDate()) + " )";
+		//String result = getTitle() + "   ( " + sdf.format(this.getPubDate()) + " )";
+		String result = "<font color='grey'>" + sdf.format(this.getPubDate()) +"  </font>  "+"<font color='green'>"+ getAuthor()+ "</font>" + "<p>"+getTitle()+"</p>";
 		return result;
 	}
 
@@ -159,9 +166,12 @@ public class RssItem {
 								.getElementsByTagName("pubDate").item(0);
 						Element _linkE = (Element) entry.getElementsByTagName(
 								"link").item(0);
+						Element _authorE = (Element) entry.getElementsByTagName("author").item(0);
 						String _title = _titleE.getFirstChild().getNodeValue();
 						String _description = _descriptionE.getFirstChild().getNodeValue();
 						String _detail = _descriptionE.getFirstChild().getNodeValue();
+						String _author = _authorE.getFirstChild().getNodeValue();
+						_author = _author.substring(16, _author.indexOf(")"));
 						int imgid1 = _detail.indexOf("src=\"");
 						int imgid2 = _detail.indexOf("\"", imgid1+6);
 						
@@ -179,7 +189,7 @@ public class RssItem {
 						_description = _description.substring(idx1+4, idx2);
 						//create RssItemObject and add it to the ArrayList
 						RssItem rssItem = new RssItem(_title, _description,
-								_pubDate, _link, _detail,_detail.substring(imgid1+5, imgid2));
+								_pubDate, _link, _detail,_detail.substring(imgid1+5, imgid2),_author);
 
 						rssItems.add(rssItem);
 					}

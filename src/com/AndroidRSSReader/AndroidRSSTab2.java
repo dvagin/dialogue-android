@@ -12,6 +12,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -23,6 +25,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -93,8 +96,42 @@ public class AndroidRSSTab2 extends Activity {
 			}
 		});
 
-		aa = new ArrayAdapter<String>(this, R.layout.topics_list_item, rssItems);
+		aa = new ArrayAdapter<String>(this, R.layout.topics_list_item, rssItems){
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent){
+				if (convertView == null) {
+					LayoutInflater inflater = AndroidRSSTab2.this.getLayoutInflater();
+					convertView = inflater.inflate(R.layout.topics_list_item, null, true);
+					//convertView.setBackgroundColor(Color.BLUE);
+					TextView label = (TextView) convertView.findViewById(R.id.labelview2);
+					int[] colors = null;
+					switch(position){
+					case 0:
+						colors = new int[] {0xFF4BABD6,0xFF0087B7};
+						break;
+					case 1:
+						colors = new int[] {0xFF52B6E4,0xFF2795C5};
+						break;
+					case 2:
+						colors = new int[] {0xFF71C8F0,0xFF56AFD7};
+						break;
+					case 3:
+						colors = new int[] {0xFF8CD0F3,0xFF62BDE7};
+						break;
+					}
+					GradientDrawable gd = new GradientDrawable(
+				            GradientDrawable.Orientation.TOP_BOTTOM,colors
+				            );
+				    gd.setCornerRadius(0f);
+				    convertView.setBackgroundDrawable(gd);
+					String item = rssItems.get(position);
+					label.setText(Html.fromHtml(item));
+				}
+				return convertView;
+			}
+		};
 		rssListView.setAdapter(aa);
+			
 
 		refressRssList();
 	}
