@@ -16,6 +16,9 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +106,8 @@ public class AndroidRSSTab2 extends Activity {
 					LayoutInflater inflater = AndroidRSSTab2.this.getLayoutInflater();
 					convertView = inflater.inflate(R.layout.topics_list_item, null, true);
 					//convertView.setBackgroundColor(Color.BLUE);
+					
+					//im.setImageDrawable(getResources().getDrawable(R.drawable.economics));
 					TextView label = (TextView) convertView.findViewById(R.id.labelview2);
 					int[] colors = null;
 					switch(position){
@@ -125,7 +130,26 @@ public class AndroidRSSTab2 extends Activity {
 				    gd.setCornerRadius(0f);
 				    convertView.setBackgroundDrawable(gd);
 					String item = rssItems.get(position);
-					label.setText(Html.fromHtml(item));
+					//SpannableString text = (SpannableString) Html.fromHtml(item);
+					ImageSpan is = null;
+					switch(position){
+					case 0:
+						is = new ImageSpan(getContext(),R.drawable.politics);
+						break;
+					case 1:
+						is = new ImageSpan(getContext(),R.drawable.economics);
+						break;
+					case 2:
+						is = new ImageSpan(getContext(),R.drawable.society);
+						break;
+					case 3:
+						is = new ImageSpan(getContext(),R.drawable.flag);
+						break;
+					}
+					
+					SpannableString text = new SpannableString("    "+item);
+					text.setSpan(is, 0, 1, 0);
+					label.setText(text);
 				}
 				return convertView;
 			}

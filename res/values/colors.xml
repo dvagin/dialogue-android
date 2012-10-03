@@ -2,4 +2,6 @@
 <resources>
     <color name="main">#ff85BCE4</color>
     <color name="white">#ffffffff</color>
+    <color name="text_tab_selected">#6A6868</color>
+	<color name="text_tab_unselected">#C0C2CB</color>
 </resources>

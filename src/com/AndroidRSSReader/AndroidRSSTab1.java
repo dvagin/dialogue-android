@@ -33,6 +33,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -96,6 +97,7 @@ public class AndroidRSSTab1 extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog = new ProgressDialog(this);
 		dialog.setMessage("Fetching RSS");
 		dialog.setCancelable(false);

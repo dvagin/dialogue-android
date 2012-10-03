@@ -11,6 +11,7 @@ import com.AndroidRSSReader.InternetReader.Links;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
@@ -24,16 +25,20 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.TextView;
 
-public class AgendaTab extends Activity {
+public class AgendaTab extends Activity implements ExpandableListView.OnChildClickListener {
 	
 	public class DateItem{
 		public String DateName;
 		public String Value;
-		public DateItem(String Value,String DateName){
+		public String link;
+		public DateItem(String Value,String DateName,String link){
 			this.Value = Value;
 			this.DateName = DateName;
+			this.link = link;
 		}
 	}
 	
@@ -118,7 +123,7 @@ public class AgendaTab extends Activity {
 	                             View convertView, ViewGroup parent) {
 	        if (convertView == null) {
 	            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	            convertView = inflater.inflate(R.layout.group_view, null);
+	            convertView = inflater.inflate(R.layout.child_view, null);
 	        }
 
 	        TextView textChild = (TextView) convertView.findViewById(R.id.textGroup);
@@ -131,6 +136,8 @@ public class AgendaTab extends Activity {
 	    public boolean isChildSelectable(int groupPosition, int childPosition) {
 	        return true;
 	    }
+
+
 	    
 	    @Override
 	    public void onGroupExpanded(int groupPosition){
@@ -152,6 +159,7 @@ public class AgendaTab extends Activity {
 	protected ExpListAdapter adapter;
 	ExpandableListView listView;
 	ProgressDialog dialog;
+	private int selectedGroup=-1;
 	
 	public int hallNum;
 	@Override
@@ -163,6 +171,8 @@ public class AgendaTab extends Activity {
 		dialog.setMessage("Refreshing timetable...");
 		dialog.setCancelable(false);
 		listView = (ExpandableListView)findViewById(R.id.expandableListView1);
+		listView.setOnChildClickListener(this);
+
 
 		hallNum = getIntent().getExtras().getInt("HallNum");
 		groups = new ArrayList<ArrayList<DateItem>>();
@@ -180,6 +190,14 @@ public class AgendaTab extends Activity {
         
         listView.setAdapter(adapter);
 		refresh();
+		listView.setOnGroupCollapseListener(new OnGroupCollapseListener(){
+
+			@Override
+			public void onGroupCollapse(int groupPosition) {
+				//listView.expandGroup(groupPosition);
+			}
+			
+		});
         //adapter.notifyDataSetChanged();
         
         
@@ -203,12 +221,15 @@ public class AgendaTab extends Activity {
 				   ArrayList<DateItem> buf = new ArrayList<DateItem>();
 				   for(int j = 0; j<inDate.getLength();++j){
 					   if(!inDate.item(j).getNodeName().equals("#text")){
-						   buf.add(new DateItem(inDate.item(j).getTextContent(),((Element)nlc.item(i)).getAttribute("value")));
-						   Log.d("indate","name "+inDate.item(j).getNodeName() + " " + ((Element)nlc.item(i)).getAttribute("value") + " val " + inDate.item(j).getTextContent()); 
+						   buf.add(new DateItem(inDate.item(j).getTextContent(),((Element)nlc.item(i)).getAttribute("value"),((Element)inDate.item(j)).getAttribute("id")));
+						   Log.d("indate","name "+inDate.item(j).getNodeName() + " " + ((Element)nlc.item(i)).getAttribute("value") + " val " + inDate.item(j).getTextContent() +" id "+((Element)inDate.item(j)).getAttribute("id")); 
 					   }
 				   }
 				   if(buf.size()==0){
-					   buf.add(new DateItem("There are no tables and no sessions.",((Element)nlc.item(i)).getAttribute("value")));
+					   buf.add(new DateItem("There are no tables and no sessions.",((Element)nlc.item(i)).getAttribute("value"),""));
+					   buf.add(new DateItem("   ",((Element)nlc.item(i)).getAttribute("value"),""));
+				   }else if(buf.size()==1){
+					   buf.add(new DateItem("   ",((Element)nlc.item(i)).getAttribute("value"),""));
 				   }
 				   newgroups.add(buf);
 			   }
@@ -231,6 +252,7 @@ public class AgendaTab extends Activity {
 					  public void run(){
 						  adapter.notifyDataSetChanged();
 						  dialog.dismiss();
+						  listView.expandGroup(0);
 					  }
 				   });
 				   
@@ -254,5 +276,20 @@ public class AgendaTab extends Activity {
 		}*/
 
 	}
+
+
+	@Override
+	public boolean onChildClick(ExpandableListView parent, View v,
+			int groupPosition, int childPosition, long id) {
+		Intent start = new Intent(this,WebShower.class);
+		if(!groups.get(groupPosition).get(childPosition).link.equals("")){
+			start.putExtra("url", groups.get(groupPosition).get(childPosition).link);
+		//Log.d("tag",groups.get(groupPosition).get(childPosition).link);
+		startActivity(start);
+		}
+		return false;
+	}
+	
+	
 
 }

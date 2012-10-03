@@ -1,5 +1,6 @@
 package com.AndroidRSSReader;
 
+import com.AndroidRSSReader.R;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +11,7 @@ public class AgendaActivity extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.maintabs);
+		setContentView(R.layout.secondtabs);
 		TabHost tabs = getTabHost();
         TabSpec day1 = tabs.newTabSpec("1");
         Intent day1in = new Intent(this,AgendaTab.class);

@@ -5,8 +5,10 @@
     android:layout_width="fill_parent"
     android:layout_height="50dp"
     android:textColor="@color/white"
-    android:padding="34dp"
     android:textSize="20sp"
+    android:paddingLeft="10dp"
+    android:paddingTop="33dp"
+    android:paddingBottom="33dp"
     android:autoLink="all" >
 </TextView> 
 
