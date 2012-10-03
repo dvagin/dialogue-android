@@ -13,8 +13,8 @@ public class RssItemDisplayer extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.rss_item_displayer);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.rss_item_displayer);
 		RssItem selectedRssItem = com.AndroidRSSReader.AndroidRSSTab1.selectedRssItem;
 		//Bundle extras = getIntent().getExtras();
 		//TextView titleTv = (TextView)findViewById(R.id.titleTextView);	

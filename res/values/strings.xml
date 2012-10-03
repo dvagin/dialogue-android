@@ -2,4 +2,13 @@
 <resources>
     <string name="hello">Hello World, AndroidRSSReader!</string>
     <string name="app_name">WPF : Dialogue of Civilizations</string>
+    <string name="about">About</string>
+
+	<string name="about_text">
+								The World Public Forum (WPF) Dialogue of Civilizations is a deliberative-consultative body that unites into a single network various international and national nongovernmental organizations (NGOs), representatives of public and state institutions, civil society organizations and faith-based groups, academics, representatives of cultural, spiritual, business, and media spheres from different countries, members of diverse civilizations and cultural traditions, and individuals who share the principles of openness mutual respect which form the basis of the contemporary dialogue of civilizations.\n\n
+								The main goals of the Forum are to unite the efforts of the global community to protect the spiritual and cultural values of humankind and to create a space for constructive dialogue among the major civilizations of the modern world. The work of the Forum is aimed at defining, developing and promoting dialogue, and introducing the spirit of cooperation and understanding into everyday life.\n\n
+								The World Public Forum seeks to create effective and democratic instruments to solve global problems and set in motion evolutionary changes in the structure of modern societyAmong the Forum\'s tasks are protecting and promoting the co-existence of diverse ideas, and combining liberal standards with humanitarian values.\n\n
+								Implementation of the Dialogue of Civilizations program is closely connected with inter-confessional dialogue that brings together representatives of world religions to face the global challenges of extremism and terrorism.\n\n
+												
+	</string>
 </resources>
